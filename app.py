@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request
 import joblib
+import os
 
-model=joblib.load("foodexp.pkl")
+os.environ["GROQ_API_KEY"] = ""
 
+model = joblib.load("foodexp.pkl")
 
 app = Flask(__name__)
 
@@ -30,12 +32,26 @@ def wrong():
 def econ():
     return(render_template("econ.html"))
 
-@app.route("/foodexp",methods=["get","post"])
-def foodexp():
+@app.route("/foodExp",methods=["get","post"])
+def foodExp():
     q = float(request.form.get("q"))
     r = model.predict([[q]])
-    return(render_template("foodexp.html",r=r[0][0]))
+    return(render_template("foodExp.html",r=r[0][0]))
 
+@app.route("/chatbot",methods=["get","post"])
+def chatbot():
+    return(render_template("chatbot.html"))
+
+@app.route("/roe",methods=["get","post"])
+def roe():
+
+
+
+    return(render_template("roe.html"))
+
+@app.route("/generalQuestion",methods=["get","post"])
+def generalQuestion():
+    return(render_template("generalQuestion.html"))
 
 if __name__ == "__main__":
     app.run()
